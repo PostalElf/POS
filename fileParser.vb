@@ -142,8 +142,8 @@ Public Class fileParser
         End Using
     End Sub
 
-    Friend Shared Function GetInventory() As List(Of InventoryItem)
-        Dim total As New List(Of InventoryItem)
+    Friend Shared Function GetInventory() As Dictionary(Of String, List(Of InventoryItem))
+        Dim total As New Dictionary(Of String, List(Of InventoryItem))
         Dim rawAll As List(Of String()) = ReadCsvAll(pathInventoryItems)
         For Each ln In rawAll
             Dim item As New InventoryItem
@@ -151,10 +151,13 @@ Public Class fileParser
                 .id = CInt(ln(0))
                 .name = ln(1)
                 .description = ln(2)
-                .price = CDbl(ln(3))
-                .hourly = CBool(ln(4))
+                .category = ln(3)
+                .price = CDbl(ln(4))
+                .hourly = CBool(ln(5))
             End With
-            total.Add(item)
+
+            If total.ContainsKey(item.category) = False Then total.Add(item.category, New List(Of InventoryItem))
+            total(item.category).Add(item)
         Next
         Return total
     End Function

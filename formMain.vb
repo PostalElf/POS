@@ -14,14 +14,16 @@
         End Set
     End Property
 
-    Private inventory As New List(Of InventoryItem)
+    Private inventory As New Dictionary(Of String, List(Of InventoryItem))
+    Private activeInventory As New List(Of InventoryItem)
+    Private orderCategoryButtons As New List(Of Button)
     Private orderButtons As New List(Of Button)
     Private orderButtonBack As Button
     Private orderButtonForward As Button
     Private orderButtonPage As Integer = 1
     Private Const orderButtonsPerPage As Integer = 23
     Private Function orderButtonPageMax() As Integer
-        Return Math.Ceiling(inventory.Count / orderButtonsPerPage)
+        Return Math.Ceiling(activeInventory.Count / orderButtonsPerPage)
     End Function
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -51,6 +53,12 @@
                 CreateOrderButton(x, y)
             Next
         Next
+        For n = 0 To inventory.Keys.Count - 1
+            Dim key As String = inventory.Keys(n)
+            Dim button As Button = CreateCategoryButton(n)
+            button.Text = key
+        Next
+        OrderCategoryButton_Click(orderCategoryButtons(0), Nothing)
         LoadOrderButtons()
 
 
@@ -75,12 +83,12 @@
     End Sub
     Private Sub LoadOrderButtons()
         Dim min As Integer = (orderButtonPage - 1) * orderButtonsPerPage
-        Dim max As Integer = Math.Min(min + 23, inventory.Count - 1)
+        Dim max As Integer = Math.Min(min + 23, activeInventory.Count - 1)
         Dim itemIndex As Integer = min
         For n = 0 To orderButtons.Count - 1
             Dim button As Button = orderButtons(n)
             If itemIndex <= max Then
-                Dim item As InventoryItem = inventory(itemIndex)
+                Dim item As InventoryItem = activeInventory(itemIndex)
                 button.Text = item.name
                 button.Enabled = True
                 button.BackColor = Color.WhiteSmoke
@@ -148,6 +156,29 @@
 
         Return button
     End Function
+    Private Function CreateCategoryButton(ByVal x As Integer) As Button
+        Const xOffset As Integer = 230
+        Const yOffset As Integer = 17
+        Const width As Integer = 80
+        Const height As Integer = 35
+
+        Dim xCoord As Integer = xOffset + (x * (width + 6))
+        Dim yCoord As Integer = yOffset
+
+        Dim button As New Button
+        With button
+            .Size = New Size(width, height)
+            .Location = New Point(xCoord, yCoord)
+            .Text = ""
+            .BackColor = Color.LightSalmon
+            .FlatStyle = FlatStyle.Flat
+
+            AddHandler .Click, AddressOf OrderCategoryButton_Click
+            orderCategoryButtons.Add(button)
+            tabpageTable.Controls.Add(button)
+        End With
+        Return button
+    End Function
 
     Private Sub TableButton_Click(ByVal sender As Button, ByVal e As System.EventArgs) Handles TableButton1.Click, TableButton2.Click
         Dim table As Table = tables(CInt(sender.Tag))
@@ -166,6 +197,10 @@
     End Sub
     Private Sub lblTableNumber_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblTableNumber.Click
         SwapTable()
+    End Sub
+    Private Sub OrderCategoryButton_Click(ByVal sender As Button, ByVal e As System.EventArgs)
+        activeInventory = inventory(sender.Text)
+        LoadOrderButtons()
     End Sub
     Private Sub OrderButton_Click(ByVal sender As Button, ByVal e As System.EventArgs)
         If sender.Tag Is Nothing Then Exit Sub

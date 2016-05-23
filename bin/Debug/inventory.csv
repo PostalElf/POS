@@ -1,7 +1,7 @@
-ID,Name,Description,Price,Hourly
-1,Test,Test Description,4.5,0
-2,Hourly,-,5,1
-3,Spleen,-,3,0
-4,Shoulders,-,1,0
-5,Elbows,-,5.5,0
-6,Hands,-,1.2,0
+ID,Name,Description,Category,Price,Hourly
+1,Test,Test Description,Test1,4.5,0
+2,Hourly,-,Test,5,1
+3,Spleen,-,Test,3,0
+4,Shoulders,-,Test,1,0
+5,Elbows,-,Test,5.5,0
+6,Hands,-,Test,1.2,0
