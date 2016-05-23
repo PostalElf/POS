@@ -1,0 +1,12 @@
+E:\Visual Studio Projects\POS\POS\bin\Debug\POS.exe
+E:\Visual Studio Projects\POS\POS\bin\Debug\POS.pdb
+E:\Visual Studio Projects\POS\POS\bin\Debug\POS.xml
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.Resources.resources
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.vbproj.GenerateResource.Cache
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.exe
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.xml
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.pdb
+E:\Visual Studio Projects\POS\POS\bin\Debug\POS.exe.config
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.formMain.resources
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.formPay.resources
+E:\Visual Studio Projects\POS\POS\obj\x86\Debug\POS.formCash.resources
