@@ -274,15 +274,7 @@
         activeTable.Open()
     End Sub
     Private Sub lblCashbox_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblCashbox.Click
-        Dim input As String = "a"
-        While IsNumeric(input) = False
-            input = InputBox("How much is in the cashbox now?", "Cashbox Manual Reset", cashbox.ToString("0.00"))
-        End While
-
-        Dim value As Double = CDbl(input)
-        If MsgBox("Setting cashbox to " & value.ToString("$0.00") & "." & vbCrLf & vbCrLf & "Are you sure?", _
-                  MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Cashbox Manual Reset") = MsgBoxResult.No Then Exit Sub
-        cashbox = value
+        If MsgBox("Go into currency counter mode?", MsgBoxStyle.YesNo, "Mode Select") = MsgBoxResult.Yes Then CountCashbox() Else SetCashbox()
     End Sub
     Private Sub dgvTableTransactions_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTableTransactions.CellClick
         Dim choice As DataGridViewCell = dgvTableTransactions.SelectedCells(0)
@@ -402,6 +394,34 @@
                 dgvTransactionDetails.Rows(n).Cells(p).Value = ln(p)
             Next
         Next
+    End Sub
+    Private Sub CountCashbox()
+        Dim value As Double = 0
+        Dim currency() As Double = {0.1, 0.2, 0.5, 1, 2, 5, 10, 50}
+        For Each curr In currency
+            Dim input As String = "a"
+            While IsNumeric(input) = False
+                input = InputBox("Now Counting: $" & curr, "$" & curr, "0")
+            End While
+
+            Dim count As Integer = CInt(input)
+            value += count * curr
+        Next
+
+        If MsgBox("Setting cashbox to " & value.ToString("$0.00") & "." & vbCrLf & vbCrLf & "Are you sure?", _
+                  MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Cashbox Manual Reset") = MsgBoxResult.No Then Exit Sub
+        cashbox = value
+    End Sub
+    Private Sub SetCashbox()
+        Dim input As String = "a"
+        While IsNumeric(input) = False
+            input = InputBox("How much is in the cashbox now?", "Cashbox Manual Reset", cashbox.ToString("0.00"))
+        End While
+
+        Dim value As Double = CDbl(input)
+        If MsgBox("Setting cashbox to " & value.ToString("$0.00") & "." & vbCrLf & vbCrLf & "Are you sure?", _
+                  MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Cashbox Manual Reset") = MsgBoxResult.No Then Exit Sub
+        cashbox = value
     End Sub
     Private Sub CloseOfBusiness()
         'check to ensure that all tables are empty
